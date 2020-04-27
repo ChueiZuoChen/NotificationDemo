@@ -64,6 +64,20 @@ class MainActivity : AppCompatActivity() {
             pendingItent2
         ).build()
 
+        //action button 2
+        val intent3 = Intent(this,SettingsActivity::class.java)
+        val pendingIntent3 = PendingIntent.getActivity(
+            this,
+            0,
+            intent3,
+            PendingIntent.FLAG_CANCEL_CURRENT
+        )
+        val action3 = NotificationCompat.Action.Builder(
+            0,
+            "Settings",
+            pendingIntent3
+        ).build()
+
 
         val notificationId = 77
         val notification = NotificationCompat.Builder(this, channelID)
@@ -74,6 +88,7 @@ class MainActivity : AppCompatActivity() {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent) //加入pendingIntent
             .addAction(action2) //加入action -> DetailsActivity
+            .addAction(action3) //加入action -> SettingsActivity
             .build()
         notificationManager?.notify(notificationId, notification)
     }
