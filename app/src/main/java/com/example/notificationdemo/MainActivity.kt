@@ -2,7 +2,9 @@ package com.example.notificationdemo
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -35,6 +37,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun displayNotification() {
+
+        /*
+        * 在notification裡面加入pendingIntent 可以讓使用者點Notification馬上轉跳到第二個畫面
+        * */
+        val tapResultIntent = Intent(this,SecondActivity::class.java)
+        //PendingIntent
+        val pendingIntent:PendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            tapResultIntent,
+            PendingIntent.FLAG_CANCEL_CURRENT
+        )
+
         val notificationId = 77
         val notification = NotificationCompat.Builder(this, channelID)
             .setContentTitle("Demo Title")
@@ -42,6 +57,7 @@ class MainActivity : AppCompatActivity() {
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent) //加入pendingIntent
             .build()
         notificationManager?.notify(notificationId, notification)
     }
