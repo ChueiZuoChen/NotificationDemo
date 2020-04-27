@@ -3,12 +3,14 @@ package com.example.notificationdemo
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
+import androidx.core.app.RemoteInput
 import kotlinx.android.synthetic.main.activity_main.*
 
 /*
@@ -23,8 +25,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    companion object{
+        val KEY_REPLY = "key_reply"
+    }
     private val channelID = "com.example.notificationdemo.channel1"
+
     private var notificationManager: NotificationManager? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -49,6 +57,17 @@ class MainActivity : AppCompatActivity() {
             tapResultIntent,
             PendingIntent.FLAG_CANCEL_CURRENT
         )
+
+        //reply action
+        val remoteInput = RemoteInput.Builder(KEY_REPLY).run {
+            setLabel("Insert your name here")
+            build()
+        }
+        val replyAction = NotificationCompat.Action.Builder(
+            0,
+            "REPLY",
+            pendingIntent
+        ).addRemoteInput(remoteInput).build()
 
         //action button 1
         val intent2 = Intent(this,DetailsActivity::class.java)
@@ -86,9 +105,10 @@ class MainActivity : AppCompatActivity() {
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setContentIntent(pendingIntent) //加入pendingIntent
+            .setContentIntent(pendingIntent) //加入pendingIntent -> SecondActivity
             .addAction(action2) //加入action -> DetailsActivity
             .addAction(action3) //加入action -> SettingsActivity
+            .addAction(replyAction) //加入replyAction -> SecondActivity
             .build()
         notificationManager?.notify(notificationId, notification)
     }
