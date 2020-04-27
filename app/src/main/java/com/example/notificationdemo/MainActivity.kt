@@ -50,6 +50,21 @@ class MainActivity : AppCompatActivity() {
             PendingIntent.FLAG_CANCEL_CURRENT
         )
 
+        //action button 1
+        val intent2 = Intent(this,DetailsActivity::class.java)
+        val pendingItent2 = PendingIntent.getActivity(
+            this,
+            0,
+            intent2,
+            PendingIntent.FLAG_CANCEL_CURRENT
+        )
+        val action2=NotificationCompat.Action.Builder(
+            0,
+            "Details",
+            pendingItent2
+        ).build()
+
+
         val notificationId = 77
         val notification = NotificationCompat.Builder(this, channelID)
             .setContentTitle("Demo Title")
@@ -58,6 +73,7 @@ class MainActivity : AppCompatActivity() {
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent) //加入pendingIntent
+            .addAction(action2) //加入action -> DetailsActivity
             .build()
         notificationManager?.notify(notificationId, notification)
     }
