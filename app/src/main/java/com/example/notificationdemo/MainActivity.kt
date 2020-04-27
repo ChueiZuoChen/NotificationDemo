@@ -11,7 +11,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 /*
 *   Notification
-*   1. 定義channelID -> package的名字
+*   1. 定義channelID -> 一定是要package的名字才會知道是哪個app觸發了notification
+*   2. 創建NotificationManager物件，取得SystemService裡面的Context.NOTIFICATION_SERVICE服務
+*   3. 建立NotificationChannel(id, name, importance)
+*                   id   -> channelID
+*                   name -> channel的名字
+*                   importance -> 選擇重要度 NotificationManager.IMPORTANCE_HIGH
 * */
 
 class MainActivity : AppCompatActivity() {
